@@ -3,6 +3,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var connectDB = require('./dbConn');
 var PORT = process.env.PORT || 3000;
+var message = require('./model/message');
 var app = express();
 
 app.use(express.static(__dirname));
