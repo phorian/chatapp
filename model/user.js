@@ -22,7 +22,8 @@ var userSchema = new Schema ({
         select: false
     },
     avi: {
-        type: String
+        type: String,
+        enum: []
     },
     active: {
         type: Boolean,

@@ -2,7 +2,7 @@ require('dotenv').config();
 var express = require('express');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
-var connectDB = require('./dbConn');
+var connectDB = require('./config/dbConn');
 var PORT = process.env.PORT || 3000;
 var message = require('./model/message');
 var http = require('http').Server(app);
@@ -18,9 +18,16 @@ app.use(bodyParser.urlencoded({extended: false}));
 connectDB();
 
 //create socket.io connection
-io.on('connection', () =>{
-    console.log('a user is connected')
-})
+io.on('connection', (socket) =>{
+    console.log('a user is connected', socket.id);
+    socket.on('disconnect', () => {
+      console.log('user is disconnected', socket.id);
+    });
+
+    socket.om('message', (msg) => {
+      console.log('Message: ' + msg);
+    });
+});
 
 //Create Routes
 app.get('/messages', (req, res) => {
