@@ -1,11 +1,11 @@
-import 'package:chat_app/global/textfield.dart';
+//import 'package:chat_app/global/textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 
 class UserProfile extends StatefulWidget {
-  final token;
-  const UserProfile({super.key, this.token});
+  final String token;
+  const UserProfile({super.key, required this.token});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -17,6 +17,7 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     super.initState();
+
     Map<String, dynamic> jwtDecodedToken =JwtDecoder.decode(widget.token);
 
     username = jwtDecodedToken['username'];
@@ -31,8 +32,7 @@ class _UserProfileState extends State<UserProfile> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
+    return Padding(
           padding: const EdgeInsets.fromLTRB(10.0, 75.0, 5.0, 0),
           child: Column(
             children: [
@@ -136,7 +136,6 @@ class _UserProfileState extends State<UserProfile> {
               )
             ],
           ),
-          ),
-    );
+          );
   }
 }
