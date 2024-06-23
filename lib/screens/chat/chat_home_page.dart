@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 //import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:chat_app/screens/chat/userprofile.dart';
-//import 'package:chat_app/screens/chat/chat_list.dart';
+import 'package:chat_app/screens/chat/chat_list.dart';
 
 
 class ChatHomePage extends StatefulWidget {
@@ -29,8 +29,8 @@ class _ChatHomePageState extends State<ChatHomePage> {
           child: Column(
                   children: [
                     UserProfile(token: widget.token),
-                    //Expanded(child: ChatList())
-                    //ChatList()
+                    //Expanded(child: ChatList()),
+                    const ChatList()
                   ],
                 ),
         ),

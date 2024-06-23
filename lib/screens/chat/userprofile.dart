@@ -1,7 +1,12 @@
 //import 'package:chat_app/global/textfield.dart';
+//import 'package:flutter/cupertino.dart';
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+
+
 
 class UserProfile extends StatefulWidget {
   final String token;
@@ -11,9 +16,11 @@ class UserProfile extends StatefulWidget {
   State<UserProfile> createState() => _UserProfileState();
 }
 
+
 class _UserProfileState extends State<UserProfile> {
 
    late String username;
+
   @override
   void initState() {
     super.initState();
@@ -23,6 +30,7 @@ class _UserProfileState extends State<UserProfile> {
     username = jwtDecodedToken['username'];
   }
 
+
   void search(){
     print('Search icon was clicked');
   }
@@ -30,6 +38,60 @@ class _UserProfileState extends State<UserProfile> {
   void addContact(){
     print('Add icon was clicked');
   }
+
+   void showAddContactDialog(BuildContext context) {
+     showModalBottomSheet<void>(
+       context: context,
+       builder: (BuildContext context) {
+         return Container(
+           padding: EdgeInsets.all(16.0),
+           decoration: BoxDecoration(
+             color: Theme.of(context).colorScheme.secondary,
+           ),
+           child: Column(
+             mainAxisSize: MainAxisSize.min,
+             children: [
+               const Text('Add Contact', style: TextStyle(fontSize: 18.0)),
+               SizedBox(height: 16.0),
+               TextField(
+                 decoration: InputDecoration(
+                     contentPadding: EdgeInsets.fromLTRB(10.0, 0, 0, 0),
+                     fillColor: Theme.of(context).colorScheme.secondary,
+                     hintText: 'Search...',
+                     hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
+                     enabledBorder: OutlineInputBorder(
+                         borderSide: BorderSide(color: Theme.of(context).colorScheme.tertiary),
+                         borderRadius: BorderRadius.horizontal(
+                             left: Radius.circular(10)
+                         )
+                     ),
+                     focusedBorder: OutlineInputBorder(
+                         borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
+                         borderRadius: BorderRadius.horizontal(
+                             left: Radius.circular(10)
+                         )
+                     )
+                 ),
+               ),
+               SizedBox(height: 16.0),
+               ElevatedButton(
+                 style: ElevatedButton.styleFrom(
+                   backgroundColor: Colors.white60
+                 ),
+                 onPressed: () {
+                   // Handle adding contact logic
+                   Navigator.pop(context); // Close the dialog
+                 },
+                 child: Text('Add', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
+               ),
+             ],
+           ),
+         );
+       },
+     );
+   }
+
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -124,7 +186,9 @@ class _UserProfileState extends State<UserProfile> {
                       color: Colors.grey.shade300,
                     ),
                     child: GestureDetector(
-                        onTap: search,
+                        onTap:() {
+                           showAddContactDialog(context);
+                        },
                         child: const Padding(
                           padding: EdgeInsets.symmetric(horizontal: 5.0),
                           child: Icon(Icons.add),
@@ -132,10 +196,14 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
 
+
                 ],
               )
             ],
           ),
           );
+
+
   }
 }
+

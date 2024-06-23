@@ -14,7 +14,7 @@ class Friend {
 }
 
 class ChatList extends StatefulWidget {
-  const ChatList({super.key});
+  const ChatList({Key? key}) : super(key: key);
 
   @override
   State<ChatList> createState() => _ChatListState();
@@ -39,6 +39,7 @@ class _ChatListState extends State<ChatList> {
         avi: friendData['avi'],
       )).toList();
     } else {
+
       throw Exception('failed to load friends');
     }
   }
