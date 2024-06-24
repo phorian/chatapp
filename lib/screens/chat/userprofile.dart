@@ -5,8 +5,15 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:chat_app/configs/config.dart';
+import 'package:http/http.dart' as http;
 
+class Friend {
+  final String id;
+  final String username;
 
+  Friend({required this.id, required this.username});
+}
 
 class UserProfile extends StatefulWidget {
   final String token;
@@ -18,6 +25,7 @@ class UserProfile extends StatefulWidget {
 
 
 class _UserProfileState extends State<UserProfile> {
+  final TextEditingController _friendUsernameController = TextEditingController();
 
    late String username;
 
@@ -35,8 +43,23 @@ class _UserProfileState extends State<UserProfile> {
     print('Search icon was clicked');
   }
   
-  void addContact(){
-    print('Add icon was clicked');
+  Future<void> addContact(String friendUsername) async {
+    try{
+      final response = await http.post(
+        Uri.parse(addFriend),
+        body: {
+          'friendId': friendUsername
+        },
+      );
+      if(response.statusCode == 200) {
+        print('Friend added succesfully');
+      } else {
+        print('Error adding friend: ${response.body}');
+      }
+    }
+    catch(e) {
+      print('Error: $e');
+    }
   }
 
    void showAddContactDialog(BuildContext context) {
@@ -54,6 +77,7 @@ class _UserProfileState extends State<UserProfile> {
                const Text('Add Contact', style: TextStyle(fontSize: 18.0)),
                SizedBox(height: 16.0),
                TextField(
+                 controller: _friendUsernameController,
                  decoration: InputDecoration(
                      contentPadding: EdgeInsets.fromLTRB(10.0, 0, 0, 0),
                      fillColor: Theme.of(context).colorScheme.secondary,
@@ -80,6 +104,8 @@ class _UserProfileState extends State<UserProfile> {
                  ),
                  onPressed: () {
                    // Handle adding contact logic
+                   final friendUsername = _friendUsernameController.text;
+                   addContact(friendUsername);
                    Navigator.pop(context); // Close the dialog
                  },
                  child: Text('Add', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary)),
